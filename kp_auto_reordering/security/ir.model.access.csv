@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reorder_update_config,name_reorder_update_config,model_reorder_update_config,,1,1,1,1
+
+access_reorder_history,name_reorder_history,model_reorder_history,,1,1,1,1
+access_reorder_history_line,name_reorder_history_line,model_reorder_history_line,,1,1,1,1

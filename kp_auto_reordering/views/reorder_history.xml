@@ -1,0 +1,63 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_reorder_history_form" model="ir.ui.view">
+        <field name="name">reorder.history.form</field>
+        <field name="model">reorder.history</field>
+        <field name="arch" type="xml">
+            <form string="Reorder History" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group>
+
+                            <field name="product_id"/>
+                            <field name="reorder_update_id"/>
+                        </group>
+                        <group>
+                            <field name="reordering_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="history_line_ids" string="Lines">
+                            <field name="line_ids">
+                                <tree>
+                                    <field name="history_id" column_invisible="1"/>
+                                    <field name="history_date"/>
+                                    <field name="product_min_qty"/>
+                                    <field name="product_max_qty"/>
+                                </tree>
+                            </field>
+
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_reorder_history_tree" model="ir.ui.view">
+        <field name="name">reorder.history.tree</field>
+        <field name="model">reorder.history</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="product_id"/>
+                <field name="reorder_update_id" optional="hide"/>
+                <field name="reordering_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_reorder_history" model="ir.actions.act_window">
+        <field name="name">Reorder History</field>
+        <field name="res_model">reorder.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_reorder_history" name="Reorder History" parent="stock.menu_product_in_config_stock"
+              action="action_reorder_history" sequence="12"/>
+</odoo>

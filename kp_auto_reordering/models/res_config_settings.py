@@ -11,3 +11,5 @@ class ResConfigSettings(models.TransientModel):
                                        config_parameter='kp_auto_reordering.sale_qty_method')
 
     sale_qty_avg_month = fields.Integer(string='Months',config_parameter='kp_auto_reordering.sale_qty_avg_month')
+    is_include_seasonal_sale = fields.Boolean(string="Include seasonal sales",
+                                              config_parameter='kp_auto_reordering.is_include_seasonal_sale')

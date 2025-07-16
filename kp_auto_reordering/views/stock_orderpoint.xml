@@ -6,7 +6,10 @@
         <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable"/>
         <field name="arch" type="xml">
             <field name="trigger" position="after">
-                <field name="buffer_days" column_invisible="False"/>
+                <field name="buffer_days" optional="hide"/>
+            </field>
+            <field name="product_uom_name" position="after">
+                <field name="reorder_update_id" optional="hide"/>
             </field>
         </field>
     </record>

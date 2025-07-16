@@ -1,0 +1,87 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_reorder_update_config_form" model="ir.ui.view">
+        <field name="name">reorder.update.config.form</field>
+        <field name="model">reorder.update.config</field>
+        <field name="arch" type="xml">
+            <form string="Reorder Configuration">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': False}"/>
+                    <button name="action_confirm"
+                            type="object"
+                            string="Confirm"
+                            class="btn-primary"
+                            invisible="state != 'new'"/>
+
+                    <button name="action_cancel_reorder_config"
+                            type="object"
+                            string="Cancel"
+                            class="btn-secondary"
+                            invisible="state == 'cancelled'" confirm="Are you sure you want to cancel this configuration?"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="apply_on" readonly="state != 'new'"/>
+                            <field name="product_ids" invisible="apply_on != 'product'" widget="many2many_tags" readonly="state != 'new'"/>
+                            <field name="category_id" invisible="apply_on != 'category'" readonly="state != 'new'"/>
+                            <field name="warehouse_id" invisible="apply_on != 'warehouse'" readonly="state != 'new'"/>
+                            <field name="sale_qty_method" required="1"/>
+                            <field name="sale_qty_avg_month" invisible="sale_qty_method != 'Average'" required="sale_qty_method == 'Average'"/>
+                        </group>
+                        <group>
+                            <field name="update_method"/>
+                            <field name="x_days" invisible="update_method != 'every_x_days'"/>
+                            <field name="start_date" readonly="state != 'new'"/>
+                            <field name="lead_time_source" readonly="state != 'new'"/>
+                            <field name="fixed_lead_days" invisible="lead_time_source != 'fixed_lead_days'" readonly="state != 'new'"/>
+                            <field name="buffer_percentage"/>
+                            <field name="use_previous_year_data"/>
+<!--                            <field name="previous_years_count" invisible="not use_previous_year_data"/>-->
+                            <field name="next_run_date"/>
+                            <field name="active" readonly="1"/>
+                            <field name="is_confirmed" readonly="1" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="reordering_ids" string="Reordering Rules" invisible="1">
+                            <field name="reordering_line_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_reorder_update_config_tree" model="ir.ui.view">
+        <field name="name">reorder.update.config.tree</field>
+        <field name="model">reorder.update.config</field>
+        <field name="arch" type="xml">
+           <tree>
+                <field name="name"/>
+                <field name="apply_on"/>
+                <field name="update_method"/>
+                <field name="start_date"/>
+                <field name="next_run_date"/>
+                <field name="state"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_reorder_updates_config" model="ir.actions.act_window">
+        <field name="name">Reorder Configurations</field>
+        <field name="res_model">reorder.update.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_reorder_updates_config" name="Reorder Configuration" parent="stock.menu_product_in_config_stock"
+              action="action_reorder_updates_config" sequence="11"/>
+</odoo>
