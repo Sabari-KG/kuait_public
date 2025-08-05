@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.ConfirmationDialog" t-inherit-mode="extension">
+        <xpath expr="//p[contains(@t-out, 'props.body')]" position="replace">
+            <t t-if="env.services.action.currentController?.action?.tag !== 'ks_dashboard_ninja'">
+                <p t-out="props.body" class="text-prewrap"/>
+            </t>
+            <t t-else="">
+                <div class="d-flex justify-content-center flex-column align-items-center">
+                    <img src="/ks_dashboard_ninja/static/images/modal-explain-ai.png" class="img-fluid mb-4" loading="lazy"/>
+<!--                    <img src="/ks_dashboard_ninja/static/images/dashboardOverview/delete-icon.png" class="img-fluid mb-4" loading="lazy"/>-->
+                    <p t-out="props.body" class="text-prewrap modal-para"/>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-set-slot='footer']" position="replace">
+            <t t-if="env.services.action.currentController?.action?.tag !== 'ks_dashboard_ninja'">
+                <t t-set-slot="footer">
+                    <button class="btn" t-att-class="props.confirmClass" t-on-click="_confirm" t-esc="props.confirmLabel"/>
+                    <button t-if="props.cancel" class="btn btn-secondary" t-on-click="_cancel" t-esc="props.cancelLabel"/>
+                </t>
+            </t>
+            <t t-else="">
+                 <t t-set-slot="footer">
+                    <div class="d-flex justify-content-center align-items-center w-100">
+                      <button class="dash-btn-red" t-on-click="_confirm" t-esc="props.confirmLabel"/>
+                      <button t-if="props.cancel" class=" ms-2 dash-default-btn" t-on-click="_cancel" t-esc="props.cancelLabel"/>
+                    </div>
+                 </t>
+            </t>
+        </xpath>
+    </t>
+
+    <t t-inherit="web.Dialog" t-inherit-mode="extension">
+        <xpath expr="//footer[contains(@class, 'modal-footer')]" position="replace">
+            <t t-if="env.services.action.currentController?.action?.tag !== 'ks_dashboard_ninja'">
+                <footer t-if="props.footer" class="modal-footer justify-content-around justify-content-md-start flex-wrap gap-1 w-100" style="order:2">
+                    <t t-slot="footer" close="() => this.data.close()">
+                        <button class="btn btn-primary o-default-button" t-on-click="() => this.data.close()">
+                            <t>Ok</t>
+                        </button>
+                    </t>
+                </footer>
+            </t>
+            <t t-else="">
+                <footer t-if="props.footer" class="modal-footer justify-content-end flex-wrap gap-1 w-100 " style="order:2">
+                    <t t-slot="footer" close="() => this.data.close()">
+                        <button class="o-default-button dash-btn-red" t-on-click="() => this.data.close()">
+                            <t>Ok</t>
+                        </button>
+                    </t>
+                </footer>
+            </t>
+        </xpath>
+    </t>
+
+
+    <t t-inherit="web.WarningDialog" t-inherit-mode="extension">
+        <xpath expr="//Dialog" position="replace">
+            <t t-if="env.services.action.currentController?.action?.tag !== 'ks_dashboard_ninja' &amp;&amp;
+            env.services.action.currentController?.action?.tag !== 'dashboard_ninja'">
+                <Dialog title="title" size="'md'" contentClass="'o_error_dialog'">
+                    <div role="alert">
+                      <p t-esc="message" class="text-prewrap"/>
+                    </div>
+                    <t t-set-slot="footer">
+                      <button class="btn btn-primary o-default-button" t-on-click="props.close">Close</button>
+                    </t>
+                </Dialog>
+            </t>
+            <t t-else="">
+                <Dialog title="title" size="'md'" contentClass="'o_error_dialog error-modal-ks'">
+                    <div role="alert" class="d-flex flex-column justify-content-center align-items-center">
+                        <img class="img-fluid mb-4" src="/ks_dashboard_ninja/static/images/dashboardOverview/access-error.png"/>
+                        <p t-esc="message" class="text-prewrap text-center modal-para"/>
+                    </div>
+                    <t t-set-slot="footer">
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <button class="dash-btn-red" t-on-click="props.close">Close</button>
+                        </div>
+                    </t>
+                </Dialog>
+            </t>
+        </xpath>
+    </t>
+
+<!--    <t t-inherit="web.FormView.Buttons" t-inherit-mode="extension">-->
+<!--        <xpath expr="//footer[contains(@class, 'modal-footer')]" position="replace">-->
+<!--            <t t-if="env.services.action.currentController?.action?.tag !== 'ks_dashboard_ninja' &amp;&amp;-->
+<!--            env.services.action.currentController?.action?.tag !== 'dashboard_ninja'">-->
+<!--                <Dialog title="title" size="'md'" contentClass="'o_error_dialog'">-->
+<!--                    <div role="alert">-->
+<!--                      <p t-esc="message" class="text-prewrap"/>-->
+<!--                    </div>-->
+<!--                    <t t-set-slot="footer">-->
+<!--                      <button class="btn btn-primary o-default-button" t-on-click="props.close">Close</button>-->
+<!--                    </t>-->
+<!--                </Dialog>-->
+<!--            </t>-->
+<!--            <t t-else="">-->
+<!--                <Dialog title="title" size="'md'" contentClass="'o_error_dialog error-modal-ks'">-->
+<!--                    <div role="alert" class="d-flex flex-column justify-content-center align-items-center">-->
+<!--                        <img class="img-fluid mb-4" src="/ks_dashboard_ninja/static/images/access-error.png" />-->
+<!--                        <p t-esc="message" class="text-prewrap text-center modal-para"/>-->
+<!--                    </div>-->
+<!--                    <t t-set-slot="footer">-->
+<!--                        <div class="d-flex justify-content-center align-items-center w-100">-->
+<!--                            <button class="dash-btn-red" t-on-click="props.close">Close</button>-->
+<!--                        </div>-->
+<!--                    </t>-->
+<!--                </Dialog>-->
+<!--            </t>-->
+<!--        </xpath>-->
+<!--    </t>-->
+
+
+
+
+
+<!--env.services.action.currentController.action-->
+
+
+
+
+</templates>

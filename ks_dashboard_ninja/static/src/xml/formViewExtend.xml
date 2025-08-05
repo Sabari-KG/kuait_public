@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="web.FormView" t-inherit-mode="extension" priority="0">
+        <xpath expr="//CogMenu" position="attributes">
+            <attribute name="t-if">
+                this.props?.resModel !== 'ks_dashboard_ninja.item'
+            </attribute>
+        </xpath>
+    </t>
+
+<!--    <t t-inherit="web.Breadcrumbs" t-inherit-mode="extension" priority="0">-->
+<!--        <xpath expr="//div[contains(@class, 'o_breadcrumb')]" position="attributes">-->
+<!--            <attribute name="t-if">-->
+<!--                (collapsedBreadcrumbs.length || visiblePathBreadcrumbs.length) &amp;&amp; props?.slots['control-panel-status-indicator']?.__ctx?.props?.resModel !== 'ks_dashboard_ninja.item'-->
+<!--            </attribute>-->
+<!--        </xpath>-->
+<!--    </t>-->
+
+    <t t-inherit="web.FormStatusIndicator" t-inherit-mode="extension" priority="0">
+        <xpath expr="//button[contains(@class, 'o_form_button_save')]//i" position="attributes">
+            <attribute name="t-att-class">
+                props.model?.config?.resModel === 'ks_dashboard_ninja.item' ? ' d-none': ''
+            </attribute>
+        </xpath>
+
+        <xpath expr="//button[contains(@class, 'o_form_button_save')]" position="inside">
+            <span t-att-class="props.model?.config?.resModel !== 'ks_dashboard_ninja.item' ? ' d-none': ''">Save</span>
+        </xpath>
+
+        <xpath expr="//button[contains(@class, 'o_form_button_cancel')]//i" position="attributes">
+            <attribute name="t-att-class">
+                props.model?.config?.resModel === 'ks_dashboard_ninja.item' ? ' d-none': ''
+            </attribute>
+        </xpath>
+
+        <xpath expr="//button[contains(@class, 'o_form_button_cancel')]" position="inside">
+            <span t-att-class="props.model?.config?.resModel !== 'ks_dashboard_ninja.item' ? ' d-none': ''">Discard</span>
+        </xpath>
+    </t>
+</templates>
