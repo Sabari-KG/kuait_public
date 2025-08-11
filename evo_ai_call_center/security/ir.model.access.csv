@@ -1,0 +1,23 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_evo_openai_settings_user,evo.ai.settings,model_evo_ai_settings,group_call_center_user,1,0,0,0
+access_evo_openai_settings_admin,evo.ai.settings,model_evo_ai_settings,group_call_center_admin,1,1,1,1
+access_evo_call_service_settings_user,evo.call.service.settings,model_evo_call_service_settings,group_call_center_user,1,0,0,0
+access_evo_call_service_settings_admin,evo.call.service.settings,model_evo_call_service_settings,group_call_center_admin,1,1,1,1
+access_evo_call_campaign_user,evo.call.campaigns,model_evo_call_campaign,group_call_center_user,1,1,1,1
+access_evo_call_campaign_admin,evo.call.campaigns,model_evo_call_campaign,group_call_center_admin,1,1,1,1
+access_evo_call_user,evo.call,model_evo_call,group_call_center_user,1,1,1,1
+access_evo_call_admin,evo.call,model_evo_call,group_call_center_admin,1,1,1,1
+access_evo_call_analysis_user,evo.call.analysis,model_evo_call_analysis,group_call_center_user,1,1,1,1
+access_evo_call_analysis_admin,evo.call.analysis,model_evo_call_analysis,group_call_center_admin,1,1,1,1
+access_evo_call_custom_user,evo.call.custom,model_evo_call_custom,group_call_center_user,1,1,1,1
+access_evo_call_custom_admin,evo.call.custom,model_evo_call_custom,group_call_center_admin,1,1,1,1
+access_evo_call_number_user,evo.call.number,model_evo_call_number,group_call_center_user,1,0,0,0
+access_evo_call_number_admin,evo.call.number,model_evo_call_number,group_call_center_admin,1,1,1,1
+access_evo_call_custom_related_user,evo.call.custom.related,model_evo_call_custom_related,group_call_center_user,1,1,1,1
+access_evo_call_custom_related_admin,evo.call.custom.related,model_evo_call_custom_related,group_call_center_admin,1,1,1,1
+access_ir_model_fields_group_call_center_user,"ir_model_fields group_call_center_user","base.model_ir_model_fields","group_call_center_user",1,0,0,0
+access_ir_model_group_call_center_user,"ir_model group_call_center_user","base.model_ir_model","group_call_center_user",1,0,0,0
+access_evo_data_settings_user,evo.data.settings.user,model_evo_data_settings,group_call_center_user,1,0,0,0
+access_evo_data_settings_admin,evo.data.settings.admin,model_evo_data_settings,group_call_center_admin,1,1,1,1
+access_evo_call_custom_related_data_cc_user,evo.call.custom.related.data.cc_user,model_evo_call_custom_related_data,group_call_center_user,1,0,0,0
+access_evo_call_custom_related_data_cc_admin,evo.call.custom.related.data.cc_admin,model_evo_call_custom_related_data,group_call_center_admin,1,1,1,1

@@ -1,0 +1,171 @@
+<odoo>
+
+    <record model="ir.actions.act_window" id="action_evo_call_campaign">
+        <field name="name">Call campaign</field>
+        <field name="res_model">evo.call.campaign</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Campaigns" id="menu_evo_call_campaign"
+              parent="menu_root_call_center"
+              sequence="2"
+              action="action_evo_call_campaign"
+              groups="group_call_center_user"/>
+
+    <record id="evo_call_campaign_view_form" model="ir.ui.view">
+        <field name="name">evo.call.campaign.form</field>
+        <field name="model">evo.call.campaign</field>
+        <field name="arch" type="xml">
+            <form string="Call Campaign">
+                <header>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                    <button name="start_campaign_out" string="Start OUT" type="object" class="oe_highlight"
+                        invisible = "state != 'new'"/>
+                    <button name="stop_campaign_out" string="Stop OUT" type="object" class="oe_highlight"
+                        invisible = "state != 'go'"
+                        confirm="This will cancel uncompleted calls. Are you sure?"/>
+                    <button name="pause_campaign" string="Pause" type="object"
+                        invisible="state != 'go'"/>
+                    <button name="unpause_campaign" string="Unpause" type="object"
+                        invisible="state != 'paused'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button string="Calls" type="object"
+                                name="action_get_calls" icon="fa-phone"
+                                class="oe_stat_button"/>
+                    </div>
+                    <h1>
+                        <field name="name" readonly="state == 'stop'"/>
+                    </h1>
+                    <notebook>
+                        <page string="Call settings">
+                            <group name="call_settings">
+                                <group>
+                                    <field name="call_number_ids" invisible="1"/>
+                                    <field name="call_setting_id" readonly="state == 'stop'"/>
+                                    <field name="number_ids" widget="many2many_tags" readonly="state == 'stop'" domain="[('service_id', '=', call_setting_id)]"/>
+
+                                </group>
+                            </group>
+                        </page>
+                        <page string="AI settings">
+                            <group>
+                                <group>
+                                    <field name="ai_setting_id" readonly="state == 'stop'"/>
+                                    <field name="service_type" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="language" readonly="state == 'stop'"/>
+                                    <field name="start_text"
+                                           placeholder="Hello. My name is [name]. I'm calling you for a [reason]."
+                                           readonly="state == 'stop'"/>
+                                </group>
+                                <separator string="AI customization"/>
+                                <group>
+                                    <button colspan="4" name="add_related_field" string="Add related field" type="object" class="btn btn-primary me-1"/>
+                                </group>
+                                <field
+                                    name="custom_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="tree"
+                                    readonly="state == 'stop'">
+                                    <form>
+                                        <field name="display_type" invisible="1"/>
+                                        <!--
+                                            We need the sequence field to be here for new lines to be added at the correct position.
+                                            TODO: at some point we want to fix this in the framework so that an invisible field is not required.
+                                        -->
+                                        <field name="sequence" invisible="1"/>
+                                        <field name="model" invisible="1"/>
+                                        <group>
+                                            <group>
+                                                <field name="name" string="Name" invisible="display_type"/>
+                                                <field name="name" string="Selection" invisible="display_type != 'line_section'"/>
+                                                <field name="name" string="Related record name" invisible="display_type != 'related_record'"/>
+                                                <field name="model_id" invisible="display_type != 'related_record'"/>
+                                            </group>
+                                            <group>
+                                                <field name="field_id" invisible="display_type" />
+                                                <field name="related_field_id" invisible="display_type != 'related_record'"/>
+                                                <field name="domain_related" widget="domain" options="{'model': 'model', 'in_dialog': True}"/>
+                                            </group>
+
+                                            <field
+                                                name="custom_related_ids"
+                                                widget="section_and_note_one2many"
+                                                mode="tree"
+                                                invisible="display_type != 'related_record'"
+                                            >
+                                                <tree
+                                                    limit="200"
+                                                    editable="bottom"
+                                                >
+                                                    <control>
+                                                        <create name="add_product_control" string="Add line"/>
+                                                    </control>
+                                                    <field name="model" column_invisible="True"/>
+                                                    <field name="sequence" widget="handle"/>
+                                                    <field name="field_id"/>
+                                                </tree>
+                                            </field>
+                                        </group>
+                                        <label for="name" string="Name" invisible="display_type"/>
+                                        <label for="name" string="Section Name" invisible="display_type != 'line_section'"/>
+                                        <field name="name"/>
+                                    </form>
+                                    <tree
+                                        editable="bottom"
+                                        limit="200"
+                                    >
+                                        <control>
+                                            <create name="add_product_control" string="Add line"/>
+                                            <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                        </control>
+                                        <field name="sequence" widget="handle" />
+                                        <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
+                                        <field name="display_type" column_invisible="True"/>
+                                        <field name="name" widget="section_and_note_text" optional="show"/>
+                                        <field name="model_id" optional="hidden"/>
+                                        <!-- Others fields -->
+                                        <field name="field_char" invisible="display_type == 'related_record' or display_type == 'line_section'" required="not display_type" widget="DynamicModelFieldSelectorChar" options="{'model': 'model'}" class="oe_inline"/>
+                                        <field name="related_field" optional="show" invisible="display_type != 'related_record'" widget="html"/>
+                                        <button name="edit_custom_related_field" type="object" icon="oi-studio" class="btn btn-primary me-1" invisible="display_type != 'related_record'" string="Edit fields"/>
+                                    </tree>
+                                </field>
+                                <separator string="AI Prompt Template"/>
+                                <field name="prompt" readonly="state == 'stop'"/>
+                            </group>
+                        </page>
+                        <page string="Contacts">
+                            <group>
+                                <field name="partner_ids" readonly="state == 'stop'">
+                                    <tree editable="top">
+                                        <field name="name"/>
+                                        <field name="mobile"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="evo_call_campaign_view_tree" model="ir.ui.view">
+        <field name="name">evo.call.campaign.tree</field>
+        <field name="model">evo.call.campaign</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="call_setting_id" optional="show"/>
+                <field name="ai_setting_id" optional="show"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<odoo>
+    <record model="ir.ui.view" id="evo_data_settings_view_tree">
+        <field name="name">evo.data.settings.tree</field>
+        <field name="model">evo.data.settings</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="prompt" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="evo_data_settings_view_tree_search" model="ir.ui.view">
+        <field name="name">evo.data.settings.search</field>
+        <field name="model">evo.data.settings</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="evo_data_settings_view_form">
+        <field name="name">evo.data.settings.form</field>
+        <field name="model">evo.data.settings</field>
+        <field name="arch" type="xml">
+            <form string="Data Settings">
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="prompt"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

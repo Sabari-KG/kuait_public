@@ -1,0 +1,76 @@
+<odoo>
+    <!-- Top menu item -->
+    <menuitem name="AI Calls" id="menu_root_call_center" groups="group_call_center_user"/>
+    <!-- menu categories -->
+     <record id="action_contacts_calls" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+    </record>
+    <menuitem name="Contacts" id="menu_evo_call_center_contacts"
+              parent="menu_root_call_center"
+              sequence="1"
+              action="action_contacts_calls"
+              groups="group_call_center_user"/>
+    <!-- Settings -->
+    <menuitem name="Settings" id="menu_call_center_settings"
+              parent="menu_root_call_center"
+              sequence="90"
+              groups="group_call_center_admin"/>
+
+    <record model="ir.actions.act_window" id="action_evo_ai_settings">
+        <field name="name">AI settings</field>
+        <field name="res_model">evo.ai.settings</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="AI settings" id="menu_ai_settings"
+              parent="menu_call_center_settings"
+              sequence="1"
+              action="action_evo_ai_settings"
+              groups="group_call_center_admin"/>
+
+    <!-- Views -->
+    <record model="ir.ui.view" id="evo_ai_settings_view_form">
+        <field name="name">evo.ai.settings.form</field>
+        <field name="model">evo.ai.settings</field>
+        <field name="arch" type="xml">
+            <form>
+                <header/>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_button_box" name="button_box"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="service_type"/>
+                        <field name="auth_token" password="True"/>
+                        <field name="cost"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="evo_ai_settings_view_tree">
+        <field name="name">evo.ai.settings.tree</field>
+        <field name="model">evo.ai.settings</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="cost"/>
+                <field name="service_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="evo_ai_settings_view_tree_search" model="ir.ui.view">
+        <field name="name">evo.ai.settings.tree.search</field>
+        <field name="model">evo.ai.settings</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]" help="Show only active records"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]" help="Show only archived records"/>
+            </search>
+        </field>
+    </record>
+</odoo>

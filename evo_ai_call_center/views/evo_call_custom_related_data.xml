@@ -1,0 +1,12 @@
+<odoo>
+      <record id="evo_call_custom_related_data_view_tree" model="ir.ui.view">
+        <field name="name">evo.call.custom.related.data.tree</field>
+        <field name="model">evo.call.custom.related.data</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="model_name"/>
+                <field name="rec_id"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

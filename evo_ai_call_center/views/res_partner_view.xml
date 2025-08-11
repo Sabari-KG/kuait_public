@@ -1,0 +1,35 @@
+<odoo>
+
+    <record id="res_partner_view_form_inherit_ai_cc" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.call.center</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button string="Calls" type="object"
+                    name="action_get_calls" icon="fa-phone"
+                    class="oe_stat_button"/>
+                <button string="Campaigns" type="object"
+                    name="action_get_campaigns" icon="fa-university"
+                    class="oe_stat_button"/>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="last_call_date" invisible="is_company"/>
+            </xpath>
+            <xpath expr="//field[@name='function']" position="after">
+                <field name="tz"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_view_search" model="ir.ui.view">
+        <field name="name">res.partner.view.search.inherit.call.center</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="campaign_ids"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

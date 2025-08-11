@@ -1,0 +1,76 @@
+<odoo>
+    <record model="ir.actions.act_window" id="action_evo_call_service_settings">
+        <field name="name">Call service settings</field>
+        <field name="res_model">evo.call.service.settings</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Call service settings" id="menu_evo_call_service_settings"
+              parent="menu_call_center_settings"
+              sequence="2"
+              action="action_evo_call_service_settings"
+              groups="group_call_center_admin"/>
+
+    <record model="ir.ui.view" id="evo_call_settings_view_tree">
+        <field name="name">evo.call.service.settings.tree</field>
+        <field name="model">evo.call.service.settings</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="service_type"/>
+                <field name="stream_cost"/>
+                <field name="record_cost"/>
+                <field name="infrastructure_cost"/>
+                <field name="call_time_limit"/>
+                <field name="call_url"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="evo_call_settings_view_tree_search" model="ir.ui.view">
+        <field name="name">evo.call.service.settings.search</field>
+        <field name="model">evo.call.service.settings</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]" help="Show only active records"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]" help="Show only archived records"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="evo_call_settings_view_form">
+        <field name="name">evo.call.service.settings.form</field>
+        <field name="model">evo.call.service.settings</field>
+        <field name="arch" type="xml">
+            <form string="API Settings">
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button string="Call numbers" type="object"
+                                name="action_get_call_numbers" icon="fa-phone"
+                                class="oe_stat_button"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="service_type"/>
+                            <field name="account_sid" password="True"/>
+                            <field name="auth_token" password="True"/>
+                            <field name="machine_detection"/>
+                            <field name="record_call"/>
+                        </group>
+                        <group>
+                            <field name="stream_cost"/>
+                            <field name="record_cost"/>
+                            <field name="infrastructure_cost"/>
+                            <field name="call_time_limit"/>
+                            <field name="call_url"/>
+                            <field name="api_key" password="True"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

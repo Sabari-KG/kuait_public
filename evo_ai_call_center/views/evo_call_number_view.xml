@@ -1,0 +1,43 @@
+<odoo>
+    <record id="evo_call_number_view_form" model="ir.ui.view">
+        <field name="name">evo.call.number.form</field>
+        <field name="model">evo.call.number</field>
+        <field name="arch" type="xml">
+            <form string="Call number">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="service_id"/>
+                        </group>
+                        <group>
+                            <field name="is_busy" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="evo_call_number_view_tree" model="ir.ui.view">
+        <field name="name">evo.call.number.tree</field>
+        <field name="model">evo.call.number</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="service_id"/>
+                <field name="is_busy"/>
+            </tree>
+        </field>
+    </record>
+    <record id="evo_call_number_tree_search" model="ir.ui.view">
+        <field name="name">>evo.call.number.tree.search</field>
+        <field name="model">evo.call.number</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]" help="Show only active records"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]" help="Show only archived records"/>
+            </search>
+        </field>
+    </record>
+</odoo>

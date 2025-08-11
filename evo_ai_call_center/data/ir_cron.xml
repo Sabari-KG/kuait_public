@@ -1,0 +1,50 @@
+<odoo noupdate="1">
+    <record id="run_call_cron" model="ir.cron">
+        <field name="name">Call center: Run calls</field>
+        <field name="model_id" ref="evo_ai_call_center.model_evo_call_service_settings"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_run_calls()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="run_call_get_info_cron" model="ir.cron">
+        <field name="name">Call center: Get Info</field>
+        <field name="model_id" ref="evo_ai_call_center.model_evo_call"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_get_info(limit=20)</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="run_call_get_transcription_cron" model="ir.cron">
+        <field name="name">Call center: Get Transcription</field>
+        <field name="model_id" ref="evo_ai_call_center.model_evo_call"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_get_transcription(limit=20)</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+
+     <record id="run_call_analyse_cron" model="ir.cron">
+        <field name="name">Call center: Analyse</field>
+        <field name="model_id" ref="evo_ai_call_center.model_evo_call"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_analyse(limit=20)</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+
+</odoo>

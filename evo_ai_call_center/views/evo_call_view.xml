@@ -1,0 +1,166 @@
+<odoo>
+    <record model="ir.actions.act_window" id="action_evo_call">
+        <field name="name">Calls</field>
+        <field name="res_model">evo.call</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+    </record>
+    <menuitem name="Calls" id="menu_evo_call"
+              parent="menu_root_call_center"
+              sequence="3"
+              action="action_evo_call"
+              groups="group_call_center_user"/>
+
+    <record id="evo_call_view_form" model="ir.ui.view">
+        <field name="name">evo.call.form</field>
+        <field name="model">evo.call</field>
+        <field name="arch" type="xml">
+            <form string="Calls">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button string="Call analysis" type="object"
+                                name="action_get_call_analysis" icon="fa-calendar-check-o"
+                                class="oe_stat_button"/>
+                        <button string="Call custom related data" type="object"
+                                name="action_get_call_related_data" icon="fa-calendar-check-o"
+                                class="oe_stat_button"/>
+                    </div>
+                    <group>
+                        <group string="Main information">
+                            <field name="name"/>
+                            <field name="is_final_call" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="campaign_id"/>
+                            <field name="call_setting_id" readonly="1"/>
+                            <field name="number_id"/>
+                            <field name="call_sid"/>
+                            <field name="audio_file_name" invisible="1"/>
+                            <field name="audio_file" widget="binary" filename="audio_file_name" readonly="1"/>
+                            <field name="download_link"/>
+                            <field name="code_error"/>
+                            <field name="machine_detected"/>
+                        </group>
+                        <group string="Call statistics">
+                            <field name="call_state"/>
+                            <field name="call_start"/>
+                            <field name="call_end"/>
+                            <field name="call_duration"/>
+                            <field name="total_cost" groups="base.group_system"/>
+                        </group>
+                        <group string="Call costs" groups="base.group_system">
+                            <field name="call_cost"/>
+                            <field name="stream_cost"/>
+                            <field name="record_cost"/>
+                            <field name="infrastructure_cost"/>
+                        </group>
+                        <group string="AI cost" groups="base.group_system">
+                            <field name="ai_cost"/>
+                        </group>
+                    </group>
+                    <separator string="Transcription"/>
+                    <field name="transcription"/>
+                    <separator string="Transcription analise"/>
+                    <field name="transcription_analise"/>
+                    <separator string="Stop message"/>
+                    <field name="stop_message"/>
+                    <separator string="First message"/>
+                    <field name="first_message"/>
+                    <separator string="AI Prompt Template"/>
+                    <field name="call_prompt"/>
+                </sheet>
+
+               <div class="oe_chatter">
+                   <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+               </div>
+            </form>
+        </field>
+    </record>
+    <record id="evo_call_view_tree" model="ir.ui.view">
+        <field name="name">evo.call.tree</field>
+        <field name="model">evo.call</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="call_sid"/>
+                <field name="partner_id"/>
+                <field name="campaign_id" optional="show"/>
+                <field name="call_setting_id" optional="hide"/>
+                <field name="number_id" optional="hide"/>
+                <field name="call_start" optional="show"/>
+                <field name="call_end" optional="show"/>
+                <field name="call_duration" optional="show"/>
+                <field name="total_cost" optional="show" groups="base.group_system"/>
+                <field name="call_cost" optional="show" groups="base.group_system"/>
+                <field name="stream_cost" optional="show" groups="base.group_system"/>
+                <field name="record_cost" optional="show" groups="base.group_system"/>
+                <field name="infrastructure_cost" optional="show" groups="base.group_system"/>
+                <field name="ai_cost" optional="show" groups="base.group_system"/>
+                <field name="call_state" optional="show"/>
+                <field name="state" optional="show"/>
+                <field name="machine_detected" optional="show"/>
+                <field name="code_error" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="evo_call_view_search" model="ir.ui.view">
+        <field name="name">evo.call.search</field>
+        <field name="model">evo.call</field>
+        <field name="arch" type="xml">
+            <search string="Calls">
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]" help="Show only active records"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]" help="Show only archived records"/>
+                <field name="name" string="Name or sid"
+                    filter_domain="['|', ('name', 'ilike', self), ('call_sid', 'ilike', self)]"/>
+                <field name="partner_id"/>
+                <field name="campaign_id"/>
+                <separator/>
+                <filter string="No Machine" name="is_machine_detected"
+                    domain="[('machine_detected', '=', False)]"/>
+                <separator/>
+                <filter string="Today" name="today" domain="[('call_start', '&gt;', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Yesterday" name="yesterday" domain="[
+                        ('call_start', '>=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')),
+                        ('call_start', '&lt;', context_today())]"/>
+                <filter string="Last Week" name="week" domain="[('call_start','&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last Month" name="month" domain="[('call_start','&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last Year" name="year" domain="[('call_start','&gt;=', (context_today() - datetime.timedelta(days=365)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_create_date" date="call_start" default_period="this_year"/>
+                <group expand="0" string="Group By">
+                    <filter string="Campaign" name="campaign" domain="[]" context="{'group_by':'campaign_id'}"/>
+                    <filter string="Number" name="number" domain="[]" context="{'group_by':'number_id'}"/>
+                    <filter string="Partner" name="partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="State" name="state_group" domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Call state" name="call_state_group" domain="[]" context="{'group_by':'call_state'}"/>
+                    <filter string="Call start" name="group_call_start" domain="[]" context="{'group_by':'call_start'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="evo_call_view_graph" model="ir.ui.view">
+        <field name="name">>evo.call.graph</field>
+        <field name="model">evo.call</field>
+        <field name="arch" type="xml">
+            <graph string="Call Analysis" sample="1" type="line">
+                <field name="total_cost" type="measure"/>
+                <field name="call_start" interval="month"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="evo_call_view_pivot" model="ir.ui.view">
+        <field name="name">evo.call.pivot</field>
+        <field name="model">evo.call</field>
+        <field name="arch" type="xml">
+            <pivot string="Call Analysis" sample="1">
+                <field name="campaign_id" type="col"/>
+                <field name="call_start" interval="month" type="row"/>
+                <field name="total_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>
